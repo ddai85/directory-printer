@@ -80,7 +80,7 @@ func generatePDF(config *Config, pcDl PCDownloader, fileId string) (err error) {
 		translate:        translate,
 		fileName:         fileName,
 		ctx:              pcDl.ctx,
-		domain:						pcDl.domain,
+		domain:           pcDl.domain,
 		firstNameColumns: 6.0,
 	}
 
@@ -195,7 +195,7 @@ type PdfDir struct {
 	ctx              context.Context
 
 	fileName string
-	domain string
+	domain   string
 
 	pdf *gofpdf.Fpdf
 
@@ -360,10 +360,10 @@ householdLoop:
 			}
 		}
 
-		high := h.Head != nil && len(h.Members) > 0
+		//high := h.Head != nil && len(h.Members) > 0
 		if h.Head != nil {
 			if h.Head.Thumbnail {
-				rc, err := bucket.Object(dir.domain+"/jpgs/"+h.Head.Id).NewReader(dir.ctx)
+				rc, err := bucket.Object(dir.domain + "/jpgs/" + h.Head.Id).NewReader(dir.ctx)
 				if err != nil {
 					log.Errorf(dir.ctx, "Error loading: %s\n", err)
 				}
@@ -390,13 +390,13 @@ householdLoop:
 
 				dir.pdf.RegisterImageOptionsReader(h.Head.Id, gofpdf.ImageOptions{ImageType: "JPG"}, buf)
 			}
-			column, firstPage, _ = dir.writeEntry(*h.Head, column, high, false, firstPage, displayOptions)
+			column, firstPage, _ = dir.writeEntry(*h.Head, column, false, true, firstPage, displayOptions)
 		}
 
 	memberLoop:
 		for _, m := range h.Members {
 			if m.Thumbnail {
-				rc, err := bucket.Object(dir.domain+"/jpgs/"+m.Id).NewReader(dir.ctx)
+				rc, err := bucket.Object(dir.domain + "/jpgs/" + m.Id).NewReader(dir.ctx)
 				if err != nil {
 					log.Errorf(dir.ctx, "Error loading: %s\n", err)
 				}
@@ -430,7 +430,7 @@ householdLoop:
 					}
 				}
 			}
-			column, firstPage, _ = dir.writeEntry(*m, column, false, high, firstPage, displayOptions)
+			column, firstPage, _ = dir.writeEntry(*m, column, false, true, firstPage, displayOptions)
 		}
 	}
 
@@ -683,7 +683,7 @@ func (dir *PdfDir) writeEntry(directoryEntry Person, lastColumn float64, highlig
 
 	dir.textWidth = dir.colWd - (dir.imageWidth + (dir.imagePadding * 2))
 
-	text := fmt.Sprintf("%s, %s%s", directoryEntry.LastName, directoryEntry.FirstName, prefix)
+	text := fmt.Sprintf("%s, %s%s", strings.ToUpper(directoryEntry.LastName), strings.ToUpper(directoryEntry.FirstName), prefix)
 	dir.pdf.SetFont(dir.fontFamily, "B", dir.fontSize)
 	dir.shrinkedCell(dir.textWidth, dir.lineHeight, dir.translate(text), "", "L", false)
 
@@ -706,7 +706,11 @@ func (dir *PdfDir) writeEntry(directoryEntry Person, lastColumn float64, highlig
 	}
 
 	if displayOptions.Address && directoryEntry.Address1 != "" {
-		dir.shrinkedCell(dir.textWidth, dir.lineHeight, dir.translate(directoryEntry.Address1+" "+directoryEntry.Address2), "", "L", false)
+		dir.shrinkedCell(dir.textWidth, dir.lineHeight, dir.translate(directoryEntry.Address1), "", "L", false)
+	}
+
+	if displayOptions.Address && directoryEntry.Address2 != "" {
+		dir.shrinkedCell(dir.textWidth, dir.lineHeight, dir.translate(directoryEntry.Address2), "", "L", false)
 	}
 
 	if directoryEntry.City != "" || directoryEntry.State != "" || directoryEntry.PostalCode != "" {
@@ -771,6 +775,14 @@ func (dir *PdfDir) writeEntry(directoryEntry Person, lastColumn float64, highlig
 		}
 
 		dir.shrinkedCell(dir.textWidth, dir.lineHeight, dir.translate(dateText), "", "L", false)
+	}
+
+	if displayOptions.Children && directoryEntry.Children1 != "" {
+		dir.shrinkedCell(dir.textWidth, dir.lineHeight, dir.translate(directoryEntry.Children1), "", "L", false)
+	}
+
+	if displayOptions.Children && directoryEntry.Children2 != "" {
+		dir.shrinkedCell(dir.textWidth, dir.lineHeight, dir.translate(directoryEntry.Children2), "", "L", false)
 	}
 
 	dir.pdf.SetY(startY + dir.columnHeight + halfPadding)

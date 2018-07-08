@@ -14,6 +14,9 @@ handlers:
   static_files: js_app/js/\1
   upload: js_app/js/(.*).min.js
   secure: always
+- url: /favicon.ico
+  static_files: favicon.ico
+  upload: favicon.ico
 - url: /(.*)
   script: _go_app
   secure: always

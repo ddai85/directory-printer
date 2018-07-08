@@ -21,11 +21,11 @@ import (
 
 const (
 	sessionName   = "s"
-	clientId      = ""
-	clientSecret  = ""
+	clientId      = "c0ae990a12cd3c0fd12ada5115ec45e1e1971aa75209e6c59f732f7cf5b6a529"
+	clientSecret  = "b2f537ad59f9c432bf2340c5626c456b51d614c8c856072f9699232970d30a1a"
 	devAuthUrl    = "http://%s/api/v1/authorize"
 	authUrl       = "https://%s/api/v1/authorize"
-	fieldUrl      = "https://api.planningcenteronline.com/people/v2/field_definitions"
+	fieldUrl      = "https://api.planningcenteronline.com/people/v2/field_definitions?offset=50"
 	listUrl       = "https://api.planningcenteronline.com/people/v2/lists"
 	peopleUrl     = "https://api.planningcenteronline.com/people/v2/people"
 	credentialUrl = "https://api.planningcenteronline.com/oauth/token"
@@ -71,6 +71,7 @@ type Section struct {
 	JobTitle           bool     `json:"job_title"`
 	Employer           bool     `json:"employer"`
 	Occupation         bool     `json:"occupation"`
+	Children           bool     `json:"children"`
 	School             bool     `json:"school"`
 	Age                bool     `json:"age"`
 	Birthday           bool     `json:"birthday"`
@@ -93,7 +94,7 @@ type ConfigRecord struct {
 }
 
 type StatusRecord struct {
-	Done bool
+	Done  bool
 	Error string
 }
 
@@ -352,7 +353,7 @@ func CreatePDF(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	}
 
 	statusKey := datastore.NewKey(pcDownloader.ctx, "Status", "", id, nil)
-		_, err = datastore.Put(pcDownloader.ctx, statusKey, &StatusRecord{})
+	_, err = datastore.Put(pcDownloader.ctx, statusKey, &StatusRecord{})
 	if err != nil {
 		log.Errorf(pcDownloader.ctx, "error saving status: %s\n", err)
 	}
@@ -384,8 +385,8 @@ func PDFWorker(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	}
 
 	pcDownloader := PCDownloader{
-		token: token,
-		domain: domain,
+		token:         token,
+		domain:        domain,
 		credentialUrl: credentialUrl,
 		profileUrl:    profileUrl,
 		listUrl:       listUrl,
@@ -410,7 +411,7 @@ func PDFWorker(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		return
 	}
 
-	if (err != nil) {
+	if err != nil {
 		log.Errorf(ctx, "error generating PDF: %s\n", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -434,7 +435,7 @@ func CheckPDF(w http.ResponseWriter, r *http.Request, params httprouter.Params) 
 		return
 	}
 
-	if (statusRecord.Error != "") {
+	if statusRecord.Error != "" {
 		http.Error(w, statusRecord.Error, http.StatusInternalServerError)
 		return
 	} else if !statusRecord.Done {
@@ -467,23 +468,23 @@ func GetConfig(w http.ResponseWriter, r *http.Request, params httprouter.Params)
 
 	config := Config{}
 
-	if pcDownloader.domain == "237729" {
+	if pcDownloader.domain == "458648" {
 		sections := make([]Section, 9)
 		sections[0].Show = true
 		sections[0].Phones = true
-		sections[0].PhoneCount = 2
+		sections[0].PhoneCount = 1
 		sections[0].Email = true
 		sections[0].Address = true
-		sections[0].DateJoined = true
-		sections[0].Birthday = true
+		sections[0].DateJoined = false
+		sections[0].Birthday = false
 		sections[0].City = true
 		sections[0].State = true
 		sections[0].PostalCode = true
 		sections[0].Country = true
-		sections[0].NewMemberFootnote = true
-		sections[0].BaptismFootnote = true
-		sections[0].Header = "Cheverly Baptist Church Members In-Area"
-		sections[0].ListName = "Members In-Area"
+		sections[0].NewMemberFootnote = false
+		sections[0].BaptismFootnote = false
+		sections[0].Header = "Hinson Memorial Baptist Church"
+		sections[0].ListName = "Directory Test"
 
 		sections[1].Show = false
 		sections[1].Phones = true
@@ -500,6 +501,7 @@ func GetConfig(w http.ResponseWriter, r *http.Request, params httprouter.Params)
 		sections[1].BaptismFootnote = true
 		sections[1].Header = "Members In-Area and Unable to Attend"
 		sections[1].ListName = "Members In-Area and Unable to Attend"
+		sections[1].Children = true
 
 		sections[2].Show = false
 		sections[2].Phones = true
@@ -520,7 +522,7 @@ func GetConfig(w http.ResponseWriter, r *http.Request, params httprouter.Params)
 		sections[3].Show = true
 		sections[3].Age = true
 		sections[3].Birthday = true
-		sections[3].Header = "CBC Children"
+		sections[3].Header = "Hinson Children"
 
 		sections[4].Show = false
 		sections[4].Phones = true

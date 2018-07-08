@@ -17,10 +17,10 @@ import (
 	"sync"
 	"time"
 
-	"google.golang.org/appengine/memcache"
-	"google.golang.org/appengine/urlfetch"
 	"cloud.google.com/go/storage"
 	"google.golang.org/appengine/file"
+	"google.golang.org/appengine/memcache"
+	"google.golang.org/appengine/urlfetch"
 
 	"golang.org/x/net/context"
 )
@@ -72,6 +72,9 @@ type Person struct {
 	PendingBaptism bool
 
 	Occupation string
+
+	Children1 string
+	Children2 string
 
 	Title    string
 	Employer string
@@ -343,7 +346,7 @@ func (dl *PCDownloader) downloadImage(remoteUrl string, person *Person, retryCou
 
 	bucket := client.Bucket(bucketName)
 
-	_, err = bucket.Object(dl.domain+"/jpgs/"+person.Id).Attrs(dl.ctx)
+	_, err = bucket.Object(dl.domain + "/jpgs/" + person.Id).Attrs(dl.ctx)
 	if err == nil {
 		person.Thumbnail = true
 		return err
@@ -367,7 +370,7 @@ func (dl *PCDownloader) downloadImage(remoteUrl string, person *Person, retryCou
 		return err
 	}
 
-	wc := bucket.Object(dl.domain+"/jpgs/"+person.Id).NewWriter(dl.ctx)
+	wc := bucket.Object(dl.domain + "/jpgs/" + person.Id).NewWriter(dl.ctx)
 	wc.ContentType = "image/jpeg"
 
 	defer wc.Close()
@@ -534,7 +537,7 @@ func (dl *PCDownloader) getFieldDefinitions() (fieldDefinitions map[string]strin
 	for _, v := range res.Data {
 		fieldDefinitions[v.Id] = v.Attributes.Name
 	}
-
+	log.Println(fieldDefinitions)
 	return fieldDefinitions, err
 }
 
@@ -645,6 +648,8 @@ func (dl *PCDownloader) downloadPerson(peopleId int, prevHouseholds map[string]H
 		LastName:   v.Attributes.LastName,
 		Id:         v.Id,
 		Occupation: fieldData["Occupation"],
+		Children1:  fieldData["Children"],
+		Children2:  fieldData["Additional Children"],
 		School:     fieldData["School"],
 		Employer:   fieldData["Employer"],
 		Title:      fieldData["Title"],
