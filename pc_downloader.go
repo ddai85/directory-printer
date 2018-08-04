@@ -347,7 +347,8 @@ func (dl *PCDownloader) downloadImage(remoteUrl string, person *Person, retryCou
 	bucket := client.Bucket(bucketName)
 
 	_, err = bucket.Object(dl.domain + "/jpgs/" + person.Id).Attrs(dl.ctx)
-	if err == nil {
+	//change this to err == nil when we want to turn on caching again
+	if err != nil {
 		person.Thumbnail = true
 		return err
 	}
