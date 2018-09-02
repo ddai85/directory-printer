@@ -445,7 +445,7 @@ func phoneNumber(phone int64) string {
 	phoneNo := fmt.Sprintf("%03d-%04d", xc, no)
 	ac := phone / 1e7 % 1e3
 	if ac != 0 {
-		phoneNo = fmt.Sprintf("(%03d) %s", ac, phoneNo)
+		phoneNo = fmt.Sprintf("%03d-%s", ac, phoneNo)
 	}
 	pfx := phone / 1e10
 	if pfx != 0 {

@@ -1,22 +1,23 @@
 runtime: go
 api_version: go1
+instance_class: F4
 
 handlers:
-- url: /css/(.*)
-  static_files: js_app/css/\1
-  upload: js_app/css/(.*).min.css
-  secure: always
-- url: /fonts/(.*)
-  static_files: js_app/fonts/\1
-  upload: js_app/fonts/(.*)
-  secure: always
-- url: /js/(.*)
-  static_files: js_app/js/\1
-  upload: js_app/js/(.*).min.js
-  secure: always
-- url: /favicon.ico
-  static_files: favicon.ico
-  upload: favicon.ico
-- url: /(.*)
-  script: _go_app
-  secure: always
+  - url: /css/(.*)
+    static_files: js_app/css/\1
+    upload: js_app/css/(.*).min.css
+    secure: always
+  - url: /fonts/(.*)
+    static_files: js_app/fonts/\1
+    upload: js_app/fonts/(.*)
+    secure: always
+  - url: /js/(.*)
+    static_files: js_app/js/\1
+    upload: js_app/js/(.*).min.js
+    secure: always
+  - url: /favicon.ico
+    static_files: favicon.ico
+    upload: favicon.ico
+  - url: /(.*)
+    script: _go_app
+    secure: always

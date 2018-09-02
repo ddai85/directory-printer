@@ -25,7 +25,7 @@ const (
 	clientSecret  = "b2f537ad59f9c432bf2340c5626c456b51d614c8c856072f9699232970d30a1a"
 	devAuthUrl    = "http://%s/api/v1/authorize"
 	authUrl       = "https://%s/api/v1/authorize"
-	fieldUrl      = "https://api.planningcenteronline.com/people/v2/field_definitions?offset=50"
+	fieldUrl      = "https://api.planningcenteronline.com/people/v2/field_definitions?per_page=100"
 	listUrl       = "https://api.planningcenteronline.com/people/v2/lists"
 	peopleUrl     = "https://api.planningcenteronline.com/people/v2/people"
 	credentialUrl = "https://api.planningcenteronline.com/oauth/token"

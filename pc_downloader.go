@@ -649,8 +649,8 @@ func (dl *PCDownloader) downloadPerson(peopleId int, prevHouseholds map[string]H
 		LastName:   v.Attributes.LastName,
 		Id:         v.Id,
 		Occupation: fieldData["Occupation"],
-		Children1:  fieldData["Children"],
-		Children2:  fieldData["Additional Children"],
+		Children1:  fieldData["Line 1 Children (Directory Use)"],
+		Children2:  fieldData["Line 2 Children (Directory Use)"],
 		School:     fieldData["School"],
 		Employer:   fieldData["Employer"],
 		Title:      fieldData["Title"],
@@ -686,7 +686,7 @@ func (dl *PCDownloader) downloadPerson(peopleId int, prevHouseholds map[string]H
 	t2, _ := time.Parse(timeFormat, v.Attributes.Birthdate)
 	person.Birthday = t2
 
-	t, _ := time.Parse(timeFormat2, fieldData["Join Date"])
+	t, _ := time.Parse(timeFormat2, fieldData["Date Joined"])
 	person.DateJoined = t
 	person.NewMember90 = t.Sub(time.Now()).Hours()/24 > -91
 
