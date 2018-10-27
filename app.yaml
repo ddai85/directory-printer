@@ -2,6 +2,12 @@ runtime: go
 api_version: go1
 instance_class: F4
 
+automatic_scaling:
+  min_instances: 0
+  max_instances: 2
+  min_idle_instances: 0
+  max_idle_instances: 0
+
 handlers:
   - url: /css/(.*)
     static_files: js_app/css/\1

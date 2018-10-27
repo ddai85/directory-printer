@@ -724,7 +724,8 @@ func (dir *PdfDir) writeEntry(directoryEntry Person, lastColumn float64, highlig
 				addressText = addressText + directoryEntry.State + " "
 			}
 			if displayOptions.PostalCode && directoryEntry.PostalCode != "" {
-				addressText = addressText + directoryEntry.PostalCode + " "
+				postalCode := strings.Split(directoryEntry.PostalCode, "-")[0]
+				addressText = addressText + postalCode + " "
 			}
 		} else {
 			if dir.gountries == nil {
