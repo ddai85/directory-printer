@@ -32,6 +32,7 @@ const (
 	profileUrl    = "https://api.planningcenteronline.com/people/v2/me"
 	hostPattern   = "https://api.planningcenteronline.com/oauth/authorize?client_id=%s&redirect_uri=%s&response_type=code&scope=people"
 	cacheTTL      = time.Duration(5) * time.Minute
+	hostName      = "hinson-dot-directory-export-pdf.appspot.com"
 )
 
 type Config struct {
@@ -122,7 +123,7 @@ func getSession(w http.ResponseWriter, r *http.Request) (pcDownloader PCDownload
 			redirectUrl = devAuthUrl
 		}
 
-		http.Redirect(w, r, fmt.Sprintf(hostPattern, clientId, fmt.Sprintf(redirectUrl, appengine.DefaultVersionHostname(ctx))), http.StatusSeeOther)
+		http.Redirect(w, r, fmt.Sprintf(hostPattern, clientId, fmt.Sprintf(redirectUrl, hostName)), http.StatusSeeOther)
 		return pcDownloader
 	}
 
@@ -139,7 +140,7 @@ func getSession(w http.ResponseWriter, r *http.Request) (pcDownloader PCDownload
 		listUrl:       listUrl,
 		peopleUrl:     peopleUrl,
 		fieldUrl:      fieldUrl,
-		authUrl:       fmt.Sprintf(redirectUrl, appengine.DefaultVersionHostname(ctx)),
+		authUrl:       fmt.Sprintf(redirectUrl, hostName),
 		ctx:           ctx,
 	}
 
@@ -199,7 +200,7 @@ func Authorize(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		clientId:      clientId,
 		clientSecret:  clientSecret,
 		credentialUrl: credentialUrl,
-		authUrl:       fmt.Sprintf(redirectUrl, appengine.DefaultVersionHostname(ctx)),
+		authUrl:       fmt.Sprintf(redirectUrl, hostName),
 		ctx:           ctx,
 	}
 
