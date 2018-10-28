@@ -1,5 +1,5 @@
 runtime: python27
-threadsafe: true
+threadsafe: false
 service: default
 
 automatic_scaling:
@@ -10,5 +10,5 @@ automatic_scaling:
   max_pending_latency: 15s
 
 handlers:
-  - url: /default
-    script: blank.app
+  - url: /
+    script: main.py

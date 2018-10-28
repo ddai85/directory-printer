@@ -1,0 +1,40 @@
+#!/bin/bash
+###retrieve command line path parameters
+
+while getopts h:u: opts; do
+
+        case ${opts} in
+
+                h)
+
+                        ##Home folder path
+
+                        HOME=${OPTARG} ;;
+
+                u)
+
+                        ##Home user name
+
+                        USER=${OPTARG} ;;
+
+        esac
+
+done
+
+# remove any previous crontab jobs that may have been left over on a reboot
+
+crontab -u $USER -r 2> /dev/null
+
+# Start directory app on Monday-Friday 8AM PST (3PM GMT)
+(crontab -u $USER -l ; echo "0 15 * * 1 $HOME/sys/startHinson > /dev/null 2>&1") 2> /dev/null | crontab -u $USER -
+(crontab -u $USER -l ; echo "0 15 * * 2 $HOME/sys/startHinson > /dev/null 2>&1") 2> /dev/null | crontab -u $USER -
+(crontab -u $USER -l ; echo "0 15 * * 3 $HOME/sys/startHinson > /dev/null 2>&1") 2> /dev/null | crontab -u $USER -
+(crontab -u $USER -l ; echo "0 15 * * 4 $HOME/sys/startHinson > /dev/null 2>&1") 2> /dev/null | crontab -u $USER -
+(crontab -u $USER -l ; echo "0 15 * * 5 $HOME/sys/startHinson > /dev/null 2>&1") 2> /dev/null | crontab -u $USER -
+
+# Stop directory app on Monday-Friday 5PM PST (12AM GMT)
+(crontab -u $USER -l ; echo "0 0 * * 2 $HOME/sys/sleepHinson > /dev/null 2>&1") 2> /dev/null | crontab -u $USER -
+(crontab -u $USER -l ; echo "0 0 * * 3 $HOME/sys/sleepHinson > /dev/null 2>&1") 2> /dev/null | crontab -u $USER -
+(crontab -u $USER -l ; echo "0 0 * * 4 $HOME/sys/sleepHinson > /dev/null 2>&1") 2> /dev/null | crontab -u $USER -
+(crontab -u $USER -l ; echo "0 0 * * 5 $HOME/sys/sleepHinson > /dev/null 2>&1") 2> /dev/null | crontab -u $USER -
+(crontab -u $USER -l ; echo "0 0 * * 6 $HOME/sys/sleepHinson > /dev/null 2>&1") 2> /dev/null | crontab -u $USER -

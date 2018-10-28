@@ -1,0 +1,11 @@
+#!/bin/bash
+
+/home/ec2-user/gcloudsdk/google-cloud-sdk/bin/gcloud app deploy /home/ec2-user/go/src/directory-printer/app_directory.yaml -q
+
+#Timestamp function
+timestamp() {
+  date
+}
+
+TIMESTAMP=$(timestamp)
+echo "${TIMESTAMP} :: Starting up hinson directory app" >> ~/logs/hinsondir.log

@@ -1,0 +1,13 @@
+Google App Engine requires the default service to be deployed at all times.
+
+The directory app was split into two microservices-- default being a very simple shell that redirects to the directory.
+
+A cronjob on another server is in charge of starting/stopping the directory service (which is named hinson).
+
+The cronjob can be edited with the "startitup" script which sets up all the cronjobs. Use this command to start it:
+
+"sudo ./startitup -u ec2-user -h /home/ec2-user" when on an AWS ec2 server.
+
+Make sure the startHinson and sleepHinson script paths match what's in startitup. Also make sure the gcloud path is correct in the individual scripts.
+
+Note that cron times are set in GMT, and very few environmental variables are carried into cron.

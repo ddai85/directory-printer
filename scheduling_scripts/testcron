@@ -1,0 +1,34 @@
+#!/bin/bash
+###retrieve command line path parameters
+
+while getopts h:u: opts; do
+
+        case ${opts} in
+
+                h)
+
+                        ##Home folder path
+
+                        HOME=${OPTARG} ;;
+
+                u)
+
+                        ##Home user name
+
+                        USER=${OPTARG} ;;
+
+        esac
+
+done
+
+# remove any previous crontab jobs that may have been left over on a reboot
+
+crontab -u $USER -r 2> /dev/null
+
+# Start directory app on Monday-Friday 8AM PST (3PM GMT)
+(crontab -u $USER -l ; echo "10 1 * * 0 $HOME/sys/startHinson >> ~/logs/output.log") 2> /dev/null | crontab -u $USER -
+(crontab -u $USER -l ; echo "20 1 * * 0 $HOME/sys/startHinson >> ~/logs/output.log") 2> /dev/null | crontab -u $USER -
+
+# Stop directory app on Monday-Friday 5PM PST (12AM GMT)
+(crontab -u $USER -l ; echo "15 1 * * 0 $HOME/sys/sleepHinson >> ~/logs/output.log") 2> /dev/null | crontab -u $USER -
+
