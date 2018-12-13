@@ -348,7 +348,7 @@ func (dl *PCDownloader) downloadImage(remoteUrl string, person *Person, retryCou
 
 	_, err = bucket.Object(dl.domain + "/jpgs/" + person.Id).Attrs(dl.ctx)
 	//change this to err == nil when we want to turn on caching again
-	if err != nil {
+	if err == nil {
 		person.Thumbnail = true
 		return err
 	}
@@ -480,7 +480,7 @@ func (dl *PCDownloader) downloadContent(remoteUrl string) (contents []byte, err 
 	item, err := memcache.Get(dl.ctx, remoteUrl)
 
 	if !dl.throttleActive {
-		dl.throttle = time.Tick(time.Second / 5)
+		dl.throttle = time.Tick(time.Second / 4)
 		dl.throttleActive = true
 	}
 
