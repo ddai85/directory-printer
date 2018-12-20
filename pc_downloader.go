@@ -479,10 +479,13 @@ func (dl *PCDownloader) downloadPeople(peopleIds []int, prevHouseholds map[strin
 func (dl *PCDownloader) downloadContent(remoteUrl string) (contents []byte, err error) {
 	item, err := memcache.Get(dl.ctx, remoteUrl)
 
-	if !dl.throttleActive {
-		dl.throttle = time.Tick(time.Second / 4)
-		dl.throttleActive = true
-	}
+	dl.throttle = time.Tick(time.Second / 4)
+	dl.throttleActive = true
+
+	// if !dl.throttleActive {
+	// 	dl.throttle = time.Tick(time.Second / 3)
+	// 	dl.throttleActive = true
+	// }
 
 	if err != nil {
 		if err != memcache.ErrCacheMiss {

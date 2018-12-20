@@ -1170,6 +1170,7 @@
         url: "/api/v1/pdf",
         data: JSON.stringify(getJson()),
         success: function (data) {
+          console.log(data);
           var checkTimer = setInterval(function () {
             $.ajax({
               type: 'GET',

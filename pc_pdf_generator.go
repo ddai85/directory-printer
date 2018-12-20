@@ -31,7 +31,7 @@ const (
 	credentialUrl = "https://api.planningcenteronline.com/oauth/token"
 	profileUrl    = "https://api.planningcenteronline.com/people/v2/me"
 	hostPattern   = "https://api.planningcenteronline.com/oauth/authorize?client_id=%s&redirect_uri=%s&response_type=code&scope=people"
-	cacheTTL      = time.Duration(5) * time.Minute
+	cacheTTL      = time.Duration(10) * time.Minute
 	hostName      = "hinson-dot-directory-export-pdf.appspot.com"
 )
 
