@@ -663,13 +663,15 @@ func (dir *PdfDir) writeEntry(directoryEntry Person, lastColumn float64, highlig
 
 	dir.pdf.SetTextColor(0, 0, 0)
 	if directoryEntry.Thumbnail {
-		dir.pdf.Image(directoryEntry.Id, dir.pdf.GetX()+dir.imagePadding, dir.pdf.GetY(), 0, dir.columnHeight, false, "", 0, "")
+		//dir.pdf.Image(directoryEntry.Id, dir.pdf.GetX()+dir.imagePadding, dir.pdf.GetY(), 0, dir.columnHeight, false, "", 0, "")
+		dir.pdf.Image(directoryEntry.Id, dir.pdf.GetX()+dir.imagePadding, dir.pdf.GetY(), 25, 0, false, "", 0, "")
 		if dir.pdf.GetImageInfo(directoryEntry.Id) != nil {
 			ratio := dir.pdf.GetImageInfo(directoryEntry.Id).Height() / dir.columnHeight
 			dir.imageWidth = dir.pdf.GetImageInfo(directoryEntry.Id).Width() / ratio
 		}
 	}
 
+	dir.imageWidth = 25
 	dir.pdf.SetLeftMargin(x + dir.imageWidth + (dir.imagePadding * 2))
 
 	prefix := ""

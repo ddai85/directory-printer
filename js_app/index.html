@@ -1170,7 +1170,6 @@
         url: "/api/v1/pdf",
         data: JSON.stringify(getJson()),
         success: function (data) {
-          console.log(data);
           var checkTimer = setInterval(function () {
             $.ajax({
               type: 'GET',
@@ -1180,7 +1179,7 @@
                   clearTimeout(timeout1)
                   clearTimeout(timeout2)
                   clearTimeout(timeout3)
-                  clearTimeout(checkTimer)
+                  clearInterval(checkTimer)
                   $(".progress-bar").css("width", "100%")
                   setTimeout(function () {
                     $(".progress").fadeOut();
@@ -1190,8 +1189,7 @@
                 }
               },
               error: function (data) {
-                console.log("err")
-                clearTimeout(checkTimer)
+                clearInterval(checkTimer)
                 $(".progress").fadeOut()
                 $(".error-pdf").fadeIn()
               }
