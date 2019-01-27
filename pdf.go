@@ -38,6 +38,29 @@ func streamPDF(ctx context.Context, fileName string, w io.Writer) (err error) {
 	bucket := client.Bucket(bucketName)
 
 	rc, err := bucket.Object(fileName).NewReader(ctx)
+
+	// chunkSize := int64(31 * 1024 * 1024)
+	// buffer := []byte{}
+
+	// for offset := int64(0); true; offset += chunkSize {
+	// 	rc, err := bucket.Object(fileName).NewRangeReader(ctx, offset, chunkSize)
+	// 	if err != nil {
+	// 		if gerr, ok := err.(*googleapi.Error); ok && gerr.Code == 416 {
+	// 			// Assume "can't satisfy range" means we read everything.
+	// 			break
+	// 		}
+	// 		return err
+	// 	}
+	// 	defer rc.Close()
+	// 	bytes, err := ioutil.ReadAll(rc)
+	// 	buffer = append(buffer, bytes...)
+	// 	if err != nil {
+	// 		return err
+	// 	}
+	// }
+
+	// rc := bytes.NewReader(buffer)
+
 	if err != nil {
 		return err
 	}

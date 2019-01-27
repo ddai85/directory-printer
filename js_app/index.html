@@ -1183,6 +1183,7 @@
                   $(".progress-bar").css("width", "100%")
                   setTimeout(function () {
                     $(".progress").fadeOut();
+                    console.log('downloading from...' + "/api/v1/pdf/" + data.id)
                     window.location.href = "/api/v1/pdf/" + data.id;
                   }, 2000)
 
