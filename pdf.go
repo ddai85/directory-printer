@@ -77,6 +77,29 @@ func streamPDF(ctx context.Context, fileName string, w io.Writer) (err error) {
 	return err
 }
 
+func generateSignedURL(ctx context.Context, fileName string) (url string) {
+	bucketName, err := file.DefaultBucketName(ctx)
+	if err != nil {
+		return ""
+	}
+
+	method := "GET"
+	expires := time.Now().Add(time.Second * 60)
+
+	url, err = storage.SignedURL(bucketName, fileName, &storage.SignedURLOptions{
+		GoogleAccessID: "directory-export-pdf@appspot.gserviceaccount.com",
+		PrivateKey:     []byte(configPrivatekey),
+		Method:         method,
+		Expires:        expires,
+	})
+
+	if err != nil {
+		return ""
+	}
+
+	return url
+}
+
 func generatePDF(config *Config, pcDl PCDownloader, fileId string) (err error) {
 	translate, err := gofpdf.UnicodeTranslatorFromFile("iso-8859-1.map")
 	if err != nil {
@@ -776,7 +799,7 @@ func (dir *PdfDir) writeEntry(directoryEntry Person, lastColumn float64, highlig
 
 		if directoryEntry.CellPhone != 0 {
 			phones++
-			dir.shrinkedCell(dir.textWidth, dir.lineHeight, dir.translate("C: "+phoneNumber(directoryEntry.CellPhone)), "", "L", false)
+			dir.shrinkedCell(dir.textWidth, dir.lineHeight, dir.translate(phoneNumber(directoryEntry.CellPhone)), "", "L", false)
 		}
 
 		if directoryEntry.HomePhone != 0 && phones < displayOptions.PhoneCount {

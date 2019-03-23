@@ -164,7 +164,7 @@
           <div class="input-group">
             <div class="input-group">
               <span class="input-group-addon">
-                <label>Phone #s?</label>
+                <label>Phone #?</label>
                 <input type="checkbox" id="phones" checked>
               </span>
               <span class="input-group-addon">
@@ -320,13 +320,13 @@
           <div class="input-group">
             <div class="input-group">
               <span class="input-group-addon">
-                <label>Phone #s?</label>
+                <label>Phone #</label>
                 <input type="checkbox" id="phones">
               </span>
-              <span class="input-group-addon">
+              <!-- <span class="input-group-addon">
                 <label>Phone Number Count</label>
               </span>
-              <input type="text" class="form-control" id="phone_count" style="width: 45px">
+              <input type="text" class="form-control" id="phone_count" style="width: 45px"> -->
               <span class="input-group-addon">
                 <label>Email Address?</label>
                 <input type="checkbox" id="email">
@@ -430,13 +430,13 @@
           <div class="input-group">
             <div class="input-group">
               <span class="input-group-addon">
-                <label>Phone #s?</label>
+                <label>Phone #?</label>
                 <input type="checkbox" id="phones">
               </span>
-              <span class="input-group-addon">
+              <!-- <span class="input-group-addon">
                 <label>Phone Number Count</label>
               </span>
-              <input type="text" class="form-control" id="phone_count" style="width: 45px">
+              <input type="text" class="form-control" id="phone_count" style="width: 45px"> -->
               <span class="input-group-addon">
                 <label>Email Address?</label>
                 <input type="checkbox" id="email">
@@ -541,13 +541,13 @@
           <div class="input-group">
             <div class="input-group">
               <span class="input-group-addon">
-                <label>Phone #s?</label>
+                <label>Phone #?</label>
                 <input type="checkbox" id="phones">
               </span>
-              <span class="input-group-addon">
+              <!-- <span class="input-group-addon">
                 <label>Phone Number Count</label>
               </span>
-              <input type="text" class="form-control" id="phone_count" style="width: 45px">
+              <input type="text" class="form-control" id="phone_count" style="width: 45px"> -->
               <span class="input-group-addon">
                 <label>Email Address?</label>
                 <input type="checkbox" id="email">
@@ -685,13 +685,13 @@
           <div class="input-group">
             <div class="input-group">
               <span class="input-group-addon">
-                <label>Phone #s?</label>
+                <label>Phone #?</label>
                 <input type="checkbox" id="phones">
               </span>
-              <span class="input-group-addon">
+              <!-- <span class="input-group-addon">
                 <label>Phone Number Count</label>
               </span>
-              <input type="text" class="form-control" id="phone_count" style="width: 45px">
+              <input type="text" class="form-control" id="phone_count" style="width: 45px"> -->
               <span class="input-group-addon">
                 <label>Email Address?</label>
                 <input type="checkbox" id="email">
@@ -796,13 +796,13 @@
           <div class="input-group">
             <div class="input-group">
               <span class="input-group-addon">
-                <label>Phone #s?</label>
+                <label>Phone #?</label>
                 <input type="checkbox" id="phones">
               </span>
-              <span class="input-group-addon">
+              <!-- <span class="input-group-addon">
                 <label>Phone Number Count</label>
               </span>
-              <input type="text" class="form-control" id="phone_count" style="width: 45px">
+              <input type="text" class="form-control" id="phone_count" style="width: 45px"> -->
               <span class="input-group-addon">
                 <label>Email Address?</label>
                 <input type="checkbox" id="email">
@@ -907,13 +907,13 @@
           <div class="input-group">
             <div class="input-group">
               <span class="input-group-addon">
-                <label>Phone #s?</label>
+                <label>Phone #?</label>
                 <input type="checkbox" id="phones">
               </span>
-              <span class="input-group-addon">
+              <!-- <span class="input-group-addon">
                 <label>Phone Number Count</label>
               </span>
-              <input type="text" class="form-control" id="phone_count" style="width: 45px">
+              <input type="text" class="form-control" id="phone_count" style="width: 45px"> -->
               <span class="input-group-addon">
                 <label>Email Address?</label>
                 <input type="checkbox" id="email">
@@ -1018,13 +1018,13 @@
           <div class="input-group">
             <div class="input-group">
               <span class="input-group-addon">
-                <label>Phone #s?</label>
+                <label>Phone #?</label>
                 <input type="checkbox" id="phones">
               </span>
-              <span class="input-group-addon">
+              <!-- <span class="input-group-addon">
                 <label>Phone Number Count</label>
               </span>
-              <input type="text" class="form-control" id="phone_count" style="width: 45px">
+              <input type="text" class="form-control" id="phone_count" style="width: 45px"> -->
               <span class="input-group-addon">
                 <label>Email Address?</label>
                 <input type="checkbox" id="email">
@@ -1184,9 +1184,20 @@
                   setTimeout(function () {
                     $(".progress").fadeOut();
                     console.log('downloading from...' + "/api/v1/pdf/" + data.id)
-                    window.location.href = "/api/v1/pdf/" + data.id;
+                    //window.location.href = "/api/v1/pdf/" + data.id;
+                    $.ajax({
+                      type: 'GET',
+                      url: "/api/v1/pdf/" + data.id,
+                      success: function (r, s, x) {
+                        if (x.status === 200) {
+                          window.location.href = r
+                        }
+                      },
+                      error: function (data) {
+                        console.log(data)
+                      }
+                    });
                   }, 2000)
-
                 }
               },
               error: function (data) {

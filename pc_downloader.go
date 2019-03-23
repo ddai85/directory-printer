@@ -615,23 +615,26 @@ func (dl *PCDownloader) downloadPerson(peopleId int, prevHouseholds map[string]H
 		}
 
 		if v.Type == "PhoneNumber" {
-			if v.Attributes.Location == "Mobile" {
-				if mobilePhone == 0 || v.Attributes.Primary {
-					mobilePhone = extractDigits(v.Attributes.Number)
-				}
+			if mobilePhone == 0 || v.Attributes.Primary {
+				mobilePhone = extractDigits(v.Attributes.Number)
 			}
+			// if v.Attributes.Location == "Mobile" {
+			// 	if mobilePhone == 0 || v.Attributes.Primary {
+			// 		mobilePhone = extractDigits(v.Attributes.Number)
+			// 	}
+			// }
 
-			if v.Attributes.Location == "Home" {
-				if homePhone == 0 || v.Attributes.Primary {
-					homePhone = extractDigits(v.Attributes.Number)
-				}
-			}
+			// if v.Attributes.Location == "Home" {
+			// 	if homePhone == 0 || v.Attributes.Primary {
+			// 		homePhone = extractDigits(v.Attributes.Number)
+			// 	}
+			// }
 
-			if v.Attributes.Location == "Work" {
-				if workPhone == 0 || v.Attributes.Primary {
-					workPhone = extractDigits(v.Attributes.Number)
-				}
-			}
+			// if v.Attributes.Location == "Work" {
+			// 	if workPhone == 0 || v.Attributes.Primary {
+			// 		workPhone = extractDigits(v.Attributes.Number)
+			// 	}
+			// }
 		}
 	}
 

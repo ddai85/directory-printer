@@ -21,8 +21,8 @@ import (
 
 const (
 	sessionName   = "s"
-	clientId      = "c0ae990a12cd3c0fd12ada5115ec45e1e1971aa75209e6c59f732f7cf5b6a529"
-	clientSecret  = "b2f537ad59f9c432bf2340c5626c456b51d614c8c856072f9699232970d30a1a"
+	clientId      = configClientID
+	clientSecret  = configClientSecret
 	devAuthUrl    = "http://%s/api/v1/authorize"
 	authUrl       = "https://%s/api/v1/authorize"
 	fieldUrl      = "https://api.planningcenteronline.com/people/v2/field_definitions?per_page=100"
@@ -457,9 +457,12 @@ func GetPDF(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 
 	id, _ := strconv.ParseInt(params.ByName("id"), 10, 64)
 
-	w.Header().Set("Content-Type", "application/pdf")
-	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=directory-%d.pdf", id))
-	streamPDF(pcDownloader.ctx, fmt.Sprintf("%s/pdfs/directory-%d.pdf", pcDownloader.domain, id), w)
+	w.Header().Set("Content-Type", "text/plain")
+	//w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=directory-%d.pdf", id))
+	//streamPDF(pcDownloader.ctx, fmt.Sprintf("%s/pdfs/directory-%d.pdf", pcDownloader.domain, id), w)
+
+	url := generateSignedURL(pcDownloader.ctx, fmt.Sprintf("%s/pdfs/directory-%d.pdf", pcDownloader.domain, id))
+	fmt.Fprint(w, url)
 }
 
 func GetConfig(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
