@@ -76,6 +76,8 @@ type Person struct {
 	Children1 string
 	Children2 string
 
+	Married bool
+
 	Title    string
 	Employer string
 	School   string
@@ -546,7 +548,7 @@ func (dl *PCDownloader) getFieldDefinitions() (fieldDefinitions map[string]strin
 }
 
 func (dl *PCDownloader) downloadPerson(peopleId int, prevHouseholds map[string]Household) (households map[string]Household, err error) {
-	remoteUrl := fmt.Sprintf("%s/%d?include=addresses,emails,phone_numbers,field_data,households", dl.peopleUrl, peopleId)
+	remoteUrl := fmt.Sprintf("%s/%d?include=addresses,emails,phone_numbers,field_data,households,marital_status", dl.peopleUrl, peopleId)
 
 	contents, err := dl.downloadContent(remoteUrl)
 	if err != nil {
@@ -560,6 +562,7 @@ func (dl *PCDownloader) downloadPerson(peopleId int, prevHouseholds map[string]H
 	var mobilePhone int64
 	var workPhone int64
 	var homePhone int64
+	var married bool
 	var householdId string
 	var householdHead string
 	var householdLink string
@@ -636,6 +639,12 @@ func (dl *PCDownloader) downloadPerson(peopleId int, prevHouseholds map[string]H
 			// 	}
 			// }
 		}
+
+		if v.Type == "MaritalStatus" {
+			if v.Attributes.Value == "Married" {
+				married = true
+			}
+		}
 	}
 
 	if households[householdId].Id == "" {
@@ -688,6 +697,8 @@ func (dl *PCDownloader) downloadPerson(peopleId int, prevHouseholds map[string]H
 	person.HomePhone = homePhone
 	person.WorkPhone = workPhone
 	person.CellPhone = mobilePhone
+
+	person.Married = married
 
 	t2, _ := time.Parse(timeFormat, v.Attributes.Birthdate)
 	person.Birthday = t2

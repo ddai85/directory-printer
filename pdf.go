@@ -406,7 +406,7 @@ householdLoop:
 			}
 		}
 
-		//high := h.Head != nil && len(h.Members) > 0
+		high := h.Head != nil && len(h.Members) > 0
 		if h.Head != nil {
 			if h.Head.Thumbnail {
 				rc, err := bucket.Object(dir.domain + "/jpgs/" + h.Head.Id).NewReader(dir.ctx)
@@ -436,7 +436,7 @@ householdLoop:
 
 				dir.pdf.RegisterImageOptionsReader(h.Head.Id, gofpdf.ImageOptions{ImageType: "JPG"}, buf)
 			}
-			column, firstPage, _ = dir.writeEntry(*h.Head, column, false, true, firstPage, displayOptions)
+			column, firstPage, _ = dir.writeEntry(*h.Head, column, high, false, firstPage, displayOptions)
 		}
 
 	memberLoop:
@@ -476,7 +476,7 @@ householdLoop:
 					}
 				}
 			}
-			column, firstPage, _ = dir.writeEntry(*m, column, false, true, firstPage, displayOptions)
+			column, firstPage, _ = dir.writeEntry(*m, column, false, high, firstPage, displayOptions)
 		}
 	}
 
