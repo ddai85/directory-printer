@@ -1,5 +1,4 @@
-runtime: go
-api_version: go1
+runtime: go111
 instance_class: F4_1G
 service: hinson
 
@@ -26,5 +25,5 @@ handlers:
     static_files: favicon.ico
     upload: favicon.ico
   - url: /(.*)
-    script: _go_app
+    script: auto
     secure: always
