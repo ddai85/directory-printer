@@ -17,3 +17,8 @@
   1. Navigate to google cloud console in browser, find the app versions and delete
   2. - enter command: "gcloud app services delete default"
      - enter command: "gcloud app services delete hinson"
+
+Other references:
+
+- Info regarding google cloud storage signed URLs: https://cloud.google.com/storage/docs/access-control/signed-urls
+- Planning center callback url looks something like this: https://hinson-dot-directory-export-pdf.appspot.com/api/v1/authorize
