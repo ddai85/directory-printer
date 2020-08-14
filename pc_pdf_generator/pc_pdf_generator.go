@@ -15,7 +15,7 @@ import (
 	"google.golang.org/appengine/log"
 	"google.golang.org/appengine/taskqueue"
 
-	"github.com/dsoprea/goappenginesessioncascade"
+	cascadestore "github.com/dsoprea/goappenginesessioncascade"
 	"github.com/julienschmidt/httprouter"
 )
 
@@ -104,8 +104,8 @@ type OverridesRecord struct {
 }
 
 var (
-	authKey      = []byte("5b13524b25c0a2ee2b599d681715da4a")
-	cryptKey     = []byte("3c48d034e14c8bb5905dd452ce4cfe64")
+	authKey      = []byte(sessionStoreAuth)
+	cryptKey     = []byte(sessionStoreCrypt)
 	sessionStore = cascadestore.NewCascadeStore(cascadestore.DistributedBackends, authKey, cryptKey)
 )
 

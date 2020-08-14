@@ -6,4 +6,6 @@ const (
   configClientID     = "planningcenterclientID"
   configClientSecret = "planning center developer api key"
   configPrivatekey   = "google private key to generate signed url"
+  sessionStoreAuth   = "session store auth secret"
+  sessionStoreCrypt  = "session store crypt secret"
 )
